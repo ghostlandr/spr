@@ -58,6 +58,11 @@ include("../session_start.php");
                             echo "<p>Okay, $user_object->name has been approved.</p>";
                         }
                     }
+                    else
+                    {
+                        echo "<p>You're trying to approve a user with an id of $userid,
+                         but they're already approved.</p>";
+                    }
                 }
 
                 $unapproved = get_unapproved_users();

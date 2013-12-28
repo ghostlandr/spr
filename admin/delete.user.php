@@ -46,6 +46,25 @@ include("../session_start.php");
             {
                 echo "<h1>Admin functions</h1>";
                 echo "<h2>Delete users</h2>";
+                if(isset($_REQUEST["id"]))
+                {
+                    $userid = $_REQUEST["id"];
+                    $user_object = get_user_from_db_by_id($userid);
+                    if(!$user_object->is_deleted())
+                    {
+                        $user_deleted = delete_user($userid);
+                        if($user_deleted)
+                        {
+                            echo "<p>Okay, $user_object->name has been deleted.</p>";
+                        }
+                    }
+                    else
+                    {
+                        echo "<p>You're trying to delete a user with an id of $userid,
+                         but they're already deleted.</p>";
+                    }
+                }
+
                 $deleting = get_all_users();
                 
                 echo "<table border=1>
