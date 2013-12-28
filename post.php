@@ -53,6 +53,17 @@ include("session_start.php");
             {
                 echo $post_object->to_html_markup();
             }
+            else if($user->is_approved_admin())
+            {
+                echo "<h3>Admin warning: This post is unapproved... 
+                why not <a href='admin/approve.post.php?id=$postid'>approve it</a>?</h3>";
+                echo $post_object->to_html_markup();
+            }
+            else
+            {
+                echo "<p>This article has not yet been approved 
+                        by an admin, and can not be shown.</p>";
+            }
             //      show it
             // else
             //      print "Not approved yet, how are you getting here?"
@@ -65,14 +76,20 @@ include("session_start.php");
         else
         {
             // Get all posts
+            $posts = get_all_posts();
             // For each post
-            //      echo this:
+            echo "<div class='content_item'>
+            <br>";
+            foreach($posts as $id=>$post)
+            {
             ?>
             <div class="listed">
-                <a href="post.php?id=$id">subject</a>
-                <div style="float:right;" class="date_small">occurenceDate</div>
+                <a href="post.php?id=<? echo $id; ?>"><? echo $post['subject']; ?></a>
+                <div style="float:right;" class="date_small"><? echo date_format(date_create($post['occurrenceDate']), "F j, Y g:iA"); ?></div>
             </div>
             <?
+            }
+            echo "</div>";
         }
             ?>
             <br clear="all">

@@ -3,6 +3,7 @@ require_once("lib.db.php");
 require_once("class.user.php");
 require_once("class.post.php");
 
+// Constants
 define("ADMIN", "admin");
 define("USER", "user");
 define("APPROVED", 1);
@@ -32,21 +33,15 @@ function delete_user($userid)
 
 function get_all_users()
 {
-    $db = get_database_connection();
-    $sql = "SELECT id, username, email, name, account_type, created FROM user";
-    $results = $db->query($sql);
-    $users = array();
-    while($row = $results->fetch_assoc())
-    {
-        $users[$row['id']] = $row;
-    }
-    $db->close();
-    return $users;
+    $table = "user";
+    $select = "id, username, email, name, account_type, created";
+    return get_fields_from_table($table, $select);
 }
 
 function get_all_posts()
 {
-    
+    $table = "post";
+    return get_fields_from_table($table, "*", "", $orderby="ORDER BY occurrenceDate DESC");
 }
 
 function get_post_by_id($postid)

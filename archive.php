@@ -42,37 +42,23 @@ include("session_start.php");
         </div>
         <div id="content_noright">
             <h1>News Archive</h1>
-            <div class="content_item">
-                <h2>December 2013</h2>
-                <br>
-                
-                <div class="listed">
-                    <a href="2013859.html">Shooting Under Investigation - No Injuries Sustained</a>
-                    <div style="float:right;" class="date_small">December 21, 2013 9:00 AM</div>
-                </div>
-                <div class="listed">
-                    <a href="2013850.html">Robbery - Rayner Avenue</a>
-                    <div style="float:right;" class="date_small">December 17, 2013 10:18 PM</div>
-                </div>
-                <div class="listed">
-                    <a href="2013847.html">Conducted Energy Weapons - Media Availability</a>
-                    <div style="float:right;" class="date_small">December 16, 2013 3:15 PM</div>
-                </div>
-                <div class="listed">
-                    <a href="2013838.html">Three-Vehicle Collision - Circle Dr East &amp; 108th Street</a>
-                    <div style="float:right;" class="date_small">December 13, 2013 3:31 PM</div>
-                </div>
-                <div class="listed">
-                    <a href="2013831.html">Suspicious Male Vehicle - Bolton Way</a>
-                    <div style="float:right;" class="date_small">December 11, 2013 4:43 PM</div>
-                </div>
-                <!-- start of single entry -->
-                <div class="listed">
-                    <a href="2013826.html">Multiple Vehicle Collision - Sid Buckwold Bridge</a>
-                    <div style="float:right;" class="date_small">December 7, 2013 5:25 PM</div>
-                </div>
-                <!-- end of single entry -->
+            <?
+            // Get all posts
+            $posts = get_all_posts();
+            // For each post
+            echo "<div class='content_item'>
+            <br>";
+            foreach($posts as $id=>$post)
+            {
+            ?>
+            <div class="listed">
+                <a href="post.php?id=<? echo $id; ?>"><? echo $post['subject']; ?></a>
+                <div style="float:right;" class="date_small"><? echo date_format(date_create($post['occurrenceDate']), "F j, Y g:iA"); ?></div>
             </div>
+            <?
+            }
+            echo "</div>";
+            ?>
             <br clear="all">
         </div>
         <div id="footer">

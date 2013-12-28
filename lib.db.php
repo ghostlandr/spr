@@ -56,11 +56,19 @@ function do_prepared_statement_by_sql_and_return_first_result($sql, $bind_params
     return true;
 }
 
-function get_fields_from_table($tablename, $fields="*", $where="")
+function get_fields_from_table($tablename, $fields="*", $where="", $orderby="")
 {
-    $sql = "SELECT $fields from $tablename $where";
-
-
+    $db = get_database_connection();
+    $sql = "SELECT $fields FROM $tablename $where $orderby";
+    $results = $db->query($sql);
+    $return_set = array();
+    while($row = $results->fetch_assoc())
+    {
+        // TODO: Better way to get primary id
+        $return_set[$row['id']] = $row;
+    }
+    $db->close();
+    return $return_set;
 }
 
 /**
