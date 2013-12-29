@@ -8,6 +8,7 @@
         if($user)
         {
             echo "Welcome $user->name! | "; 
+            echo $user->user_can_post() ? "<a href='post.php?create'>Create Post</a> | " : "";
             echo "<a href='../../'>Index</a> | ";
             echo $user->is_approved() ? "<a href='../../archive.php'>Archives</a> | " : "";
             echo $user->is_approved_admin() ? "<a href='../../admin.php'>Admin</a> | " : "";

@@ -80,6 +80,7 @@ include("session_start.php");
                 if($postid = add_post_to_db($user, $release_number, $prepared_by, $subject, 
                     $reportbody, $occurrencedate, $occurrencenumber))
                 {
+                    echo "<h2>Creating a new post</h2>";
                     echo "<p><a href='post.php?id=$postid'>Post successfully created!</a></p>";
                     echo "<p><a href='./'>Index</a></p>";
                 }
@@ -87,6 +88,7 @@ include("session_start.php");
             else
             {
             ?>
+            <h2>Creating a new post</h2>
             <form method="POST" action='post.php?create' class='post-form'>
                 <label for='releaseno'>Release Number</label>
                 <input type='number' required name='releaseno' id='releaseno' />

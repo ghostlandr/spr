@@ -83,7 +83,7 @@ include("../../session_start.php");
 
             }
 
-            echo "<p><a href='../admin.php'>Go back to the other admin functions</a></p>";
+            echo "<p><a href='../../admin.php'>Go back to the other admin functions</a></p>";
         ?>
             <br clear="all">
         </div>
