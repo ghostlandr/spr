@@ -11,16 +11,9 @@ include("session_start.php");
 
 <body>
     <div id="container">
-        <div id="header">
-            <div>
-            <img src="img/logo.gif" alt="Saskatoon Police Report" id="banner_logo">
-            </div>
-            <div id="login">
-            <?
-            include("welcome_header.php");
-            ?>
-            </div>
-        </div>
+        <?
+        include("welcome_header.php");
+        ?>
         <br clear="all">
         <div id="leftnav">
             <div class="menu_item"><span>About Us</span></div>
@@ -47,9 +40,10 @@ include("session_start.php");
                 ?>
                 <h1>Admin functions</h1>
                 <ul>
-                    <li><a href='admin/approve.user.php'>Approve users</a></li>
-                    <li><a href='admin/delete.user.php'>Delete users</a></li>
-                    <li><a href='admin/change.user.php'>Change user information</a></li>
+                    <li><a href='admin/user/approve.php'>Approve users</a></li>
+                    <li><a href='admin/user/create.php'>Create a user</a></li>
+                    <li><a href='admin/user/delete.php'>Delete users</a></li>
+                    <li><a href='admin/user/change.php'>Change user information</a></li>
                 </ul>
                 <p><a href="./">Go on home</a></p>
                 <?

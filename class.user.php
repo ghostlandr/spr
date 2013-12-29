@@ -28,6 +28,11 @@ class User
         unset($this);
     }
 
+    function get_user_id()
+    {
+        return $this->userid;
+    }
+
     function is_approved()
     {
         return $this->approved == APPROVED;
@@ -51,5 +56,10 @@ class User
     function is_user()
     {
         return $this->account_type == USER;
+    }
+
+    function user_can_post()
+    {
+        return $this->is_approved_admin() || $this->is_approved();
     }
 }

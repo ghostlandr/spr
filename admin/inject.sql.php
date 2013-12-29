@@ -47,7 +47,7 @@ INSERT INTO user (id, username, password, email, name, account_type, created, ap
 (13, 'graham', '905e55b4671f18a27c530b47d04e4ad3', 'menello@gmail.com', 'Graham', 'admin', '2013-12-26 23:29:53', 1)
 ";
 
-$db = get_database_connection();
+// $db = get_database_connection();
 
 // if($db->query($sql1)) 
 // { 
@@ -59,15 +59,15 @@ $db = get_database_connection();
 //     echo "Error: " . $db->error . "<br>";
 // }
 
-if($db->query($sql2))
-{
-    echo "Post data inserted successfully<br>";
-}
-else
-{
-    echo "Post data insert failed<br>";
-    echo "Error: " . $db->error . "<br>";
-}
+// if($db->query($sql2))
+// {
+//     echo "Post data inserted successfully<br>";
+// }
+// else
+// {
+//     echo "Post data insert failed<br>";
+//     echo "Error: " . $db->error . "<br>";
+// }
 
 // if($db->query($sql3))
 // {
@@ -89,4 +89,4 @@ else
 //     echo "Error: " . $db->error . "<br>";
 // }
 
-$db->close();
+// $db->close();

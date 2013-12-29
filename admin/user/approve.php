@@ -1,26 +1,19 @@
 <?
-include("../session_start.php");
+include("../../session_start.php");
 ?>
 <!DOCTYPE html>
 
 <head>
 <title>Saskatoon Police Report</title>
 
-<link rel="stylesheet" type="text/css" href="../spr.css">
+<link rel="stylesheet" type="text/css" href="../../spr.css">
 </head>
 
 <body>
     <div id="container">
-        <div id="header">
-            <div>
-            <img src="../img/logo.gif" alt="Saskatoon Police Report" id="banner_logo">
-            </div>
-            <div id="login">
-            <?php
-            include("admin_header.php");
-            ?>
-            </div>
-        </div>
+        <?
+        include("admin_header.php");
+        ?>
         <br clear="all">
         <div id="leftnav">
             <div class="menu_item"><span>About Us</span></div>
@@ -90,7 +83,7 @@ include("../session_start.php");
 
             }
 
-            echo "<p><a href='../admin.php'>Go back to the other admin functions</a></p>";
+            echo "<p><a href='../../admin.php'>Go back to the other admin functions</a></p>";
         ?>
             <br clear="all">
         </div>
@@ -103,7 +96,7 @@ include("../session_start.php");
     <script type='text/javascript'>
         var confirmApprove = function(userid){
             if(confirm("Are you sure you want to approve this person?")) {
-                window.location.assign('approve.user.php?id=' + userid);
+                window.location.assign('approve.php?id=' + userid);
             }
         };
     </script>

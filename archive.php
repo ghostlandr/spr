@@ -11,16 +11,9 @@ include("session_start.php");
 
 <body>
     <div id="container">
-        <div id="header">
-            <div>
-            <img src="img/logo.gif" alt="Saskatoon Police Report" id="banner_logo">
-            </div>
-            <div id="login">
-            <?
-            include("welcome_header.php");
-            ?>
-            </div>
-        </div>
+        <?
+        include("welcome_header.php");
+        ?>
         <br clear="all">
         <div id="leftnav">
             <div class="menu_item"><span>About Us</span></div>

@@ -11,16 +11,9 @@ include("session_start.php");
 
 <body>
     <div id="container">
-        <div id="header">
-            <div>
-            <img src="img/logo.gif" alt="Saskatoon Police Report" id="banner_logo">
-            </div>
-            <div id="login">
-            <?
-                include("welcome_header.php");
-            ?>
-            </div>
-        </div>
+        <?
+            include("welcome_header.php");
+        ?>
         <br clear="all">
         <div id="leftnav">
             <div class="menu_item"><span>About Us</span></div>
@@ -42,9 +35,22 @@ include("session_start.php");
         </div>
         <div id="content_noright">
             <h1>The Latest News</h1>
-            <?php
-            //TODO: implementation
-
+            <?
+            // Get the five newest posts
+            $posts = get_posts(5);
+            // For each post
+            echo "<div class='content_item'>
+            <br>";
+            foreach($posts as $id=>$post)
+            {
+            ?>
+            <div class="listed">
+                <a href="post.php?id=<? echo $id; ?>"><? echo $post['subject']; ?></a>
+                <div style="float:right;" class="date_small"><? echo date_format(date_create($post['occurrenceDate']), "F j, Y g:iA"); ?></div>
+            </div>
+            <?
+            }
+            echo "</div>";
             ?>
             <p>See more... in <a href='archive.php'>the news archive</a>.</p>
             <br clear="all">

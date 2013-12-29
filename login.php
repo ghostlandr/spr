@@ -11,16 +11,9 @@ include("session_start.php");
 
 <body>
     <div id="container">
-        <div id="header">
-            <div>
-            <img src="img/logo.gif" alt="Saskatoon Police Report" id="banner_logo">
-            </div>
-            <div id="login">
-            <?
-            include("welcome_header.php");
-            ?>
-            </div>
-        </div>
+        <?
+        include("welcome_header.php");
+        ?>
         <br clear="all">
         <div id="leftnav">
             <div class="menu_item"><span>About Us</span></div>
@@ -87,7 +80,9 @@ include("session_start.php");
                             <input type="submit" />
                         </form>
                         </div>
-                        <p>Don\'t have an account yet? <a href="newuser.php">Click here</a> to sign up for one!</p>
+                        <p>Don\'t have an account? Feel free to 
+                        <a href="mailto:contact@saskatoonpolicereport.ca?Subject=You+suck">email us</a> and complain...
+                        maybe you\'ll get an account.</p>
                     ';
                 }
             }
@@ -104,7 +99,9 @@ include("session_start.php");
                     <input type="submit" />
                 </form>
                 </div>
-                <p>Don\'t have an account yet? <a href="newuser.php">Click here</a> to sign up for one!</p>
+                <p>Don\'t have an account? Feel free to 
+                <a href="mailto:contact@saskatoonpolicereport.ca?Subject=You+suck">email us</a> and complain...
+                maybe you\'ll get an account.</p>
                 ';
             }
             ?>

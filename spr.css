@@ -179,5 +179,8 @@ h2
 	border: 2px white;
 }
 
-
+.post-form label
+{
+	display: block;
+}
 

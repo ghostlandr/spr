@@ -20,13 +20,49 @@ function do_prepared_statement_by_sql($sql, $bind_params_array)
         call_user_func_array(array($stmt, "bind_param"), $bind_params_array);
         if(!$stmt->execute())
         {
+            $db->close();
             return false;
         }
         $stmt->close();
     }
+    else
+    {
+        $db->close();
+        return false;
+    }
     $db->close();
     // If we got here, we succeeded
     return true;
+}
+
+function do_prepared_insert_statement_by_sql($sql, $bind_params_array)
+{
+    $db = get_database_connection();
+    $insertid = 0;
+    if($stmt = $db->prepare($sql))
+    {
+        // http://php.net/manual/en/function.call-user-func-array.php
+        // This function is disgustingly cool, lol.
+        // For it to work, the first array must pass this condition:
+        //      is_callable(array($stmt, "bind_param")) == true
+        // The second array must contain the references to parameters
+        call_user_func_array(array($stmt, "bind_param"), $bind_params_array);
+        if(!$stmt->execute())
+        {
+            $db->close();
+            return false;
+        }
+        $insertid = $stmt->insert_id;
+        $stmt->close();
+    }
+    else
+    {
+        $db->close();
+        return false;
+    }
+    $db->close();
+    // If we got here, we succeeded
+    return $insertid;
 }
 
 function do_prepared_statement_by_sql_and_return_first_result($sql, $bind_params_array, $bind_results_array)
@@ -43,6 +79,7 @@ function do_prepared_statement_by_sql_and_return_first_result($sql, $bind_params
         call_user_func_array(array($stmt, "bind_param"), $bind_params_array);
         if(!$stmt->execute())
         {
+            $db->close();
             return false;
         }
         call_user_func_array(array($stmt, "bind_result"), $bind_results_array);
@@ -51,15 +88,20 @@ function do_prepared_statement_by_sql_and_return_first_result($sql, $bind_params
         $stmt->fetch();
         $stmt->close();
     }
+    else
+    {
+        $db->close();
+        return false;
+    }
     $db->close();
     // If we got here, we succeeded
     return true;
 }
 
-function get_fields_from_table($tablename, $fields="*", $where="", $orderby="")
+function get_fields_from_table($tablename, $fields="*", $where="", $orderby="", $limit="")
 {
     $db = get_database_connection();
-    $sql = "SELECT $fields FROM $tablename $where $orderby";
+    $sql = "SELECT $fields FROM $tablename $where $orderby $limit";
     $results = $db->query($sql);
     $return_set = array();
     while($row = $results->fetch_assoc())

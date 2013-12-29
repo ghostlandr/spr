@@ -8,13 +8,28 @@ define("ADMIN", "admin");
 define("USER", "user");
 define("APPROVED", 1);
 
+function add_post_to_db($user_object, $release_number, $prepared_by, $subject, 
+                    $reportbody, $occurrencedate, $occurrencenumber)
+{
+    $userid = $user_object->get_user_id();
+    $approved = $user_object->is_approved_admin() ? APPROVED : 0;
+    $sql = "INSERT INTO post (authorId, releaseNo, preparedBy, subject,
+             body, occurrenceDate, occurrenceNumber, approved)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $bind_string = "iissssii";
+    $bind_params_array = array(&$bind_string, &$userid, &$release_number, 
+        &$prepared_by, &$subject, &$reportbody, &$occurrencedate, &$occurrencenumber, &$approved);
+
+    return do_prepared_insert_statement_by_sql($sql, $bind_params_array);
+}
+
 function add_user_to_db($username, $password, $email, $name, $account_type)
 {
     $hashed_password = md5($password);
-    $sql = "INSERT INTO user (username, password, email, name, account_type) VALUES(?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO user (username, password, email, name, account_type) VALUES (?, ?, ?, ?, ?)";
     $bind_string = "sssss";
-    return do_prepared_statement_by_sql($sql, 
-        array(&$bind_string, &$username, &$hashed_password, &$email, &$name, &$account_type));
+    $bind_params_array = array(&$bind_string, &$username, &$hashed_password, &$email, &$name, &$account_type);
+    return do_prepared_statement_by_sql($sql, $bind_params_array);
 }
 
 function approve_user($userid)
@@ -41,7 +56,8 @@ function get_all_users()
 function get_all_posts()
 {
     $table = "post";
-    return get_fields_from_table($table, "*", "", $orderby="ORDER BY occurrenceDate DESC");
+    $orderby = "ORDER BY occurrenceDate DESC";
+    return get_fields_from_table($table, "*", "", $orderby);
 }
 
 function get_post_by_id($postid)
@@ -65,25 +81,29 @@ function get_post_by_id($postid)
     return $post_object;
 }
 
+function get_posts($limit)
+{
+    $table = "post";
+    $orderby = "ORDER BY occurrenceDate DESC";
+    $limit = "LIMIT 5";
+    // There's no way to do "named parameters" so this has to do.
+    // See https://wiki.php.net/rfc/named_params for more info.
+    return get_fields_from_table($table, "*", "", $orderby, $limit);
+}
+
 function get_unapproved_users()
 {
-    $db = get_database_connection();
-    $sql = "SELECT id, username, email, name, account_type, created FROM user WHERE approved = 0";
-    $results = $db->query($sql);
-    $users = array();
-    while($row = $results->fetch_assoc())
-    {
-        $users[$row['id']] = $row;
-    }
-    $db->close();
-    return $users;
+    $fields = "id, username, email, name, account_type, created";
+    $table = "user";
+    $where = "WHERE approved = 0";
+    return get_fields_from_table($table, $fields, $where);
 }
 
 function get_user_from_db($username, $password)
 {
     $user_object = false;
     $hashed_password = md5($password);
-    $sql = "SELECT * FROM user WHERE username=? AND password=?";
+    $sql = "SELECT * FROM user WHERE username = ? AND password = ?";
     $id = $dbusername = $dbpassword = $email = $name = $type = $created = $logins = null;
     $bind_string = "ss";
     $bind_params_array = array(&$bind_string, &$username, &$hashed_password);
@@ -99,32 +119,30 @@ function get_user_from_db($username, $password)
 
 function get_user_from_db_by_id($userid, $as_user_object=true)
 {
-    $db = get_database_connection();
-
+    $username = $password = $email = $name = $type = $created = $approved = $id = null;
     $user_object = null;
-    if($stmt = $db->prepare("SELECT * FROM user WHERE id=?"))
+    $sql = "SELECT * FROM user WHERE id = ?";
+    $bind_string = "i";
+    $bind_param_array = array(&$bind_string, &$userid);
+    $bind_results_array = array(&$id, &$username, &$password, &$email, &$name, &$type,
+                                &$created, &$approved);
+
+    do_prepared_statement_by_sql_and_return_first_result($sql, $bind_param_array, $bind_results_array);
+
+    if($as_user_object)
     {
-        $stmt->bind_param("i", $userid);
-        $stmt->execute();
-        $stmt->bind_result($id, $dbusername, $dbpassword, $email, $name, $type, $created, $approved);
-        $stmt->fetch();
-        if($as_user_object)
-        {
-            $user_object = new User($dbusername, $dbpassword, $email, $name, $type, $created, $approved, $id);
-        }
-        else
-        {
-            $user_object = array("username"=>$dbusername,
-                                 "email"=>$email,
-                                 "name"=>$name,
-                                 "account_type"=>$type,
-                                 "created"=>$created,
-                                 "approved"=>$approved,
-                                 "id"=>$id);
-        }
-        $stmt->close();
+        $user_object = new User($username, $password, $email, $name, $type, $created, $approved, $id);
     }
-    $db->close();
+    else
+    {
+        $user_object = array("username"=>$username,
+                             "email"=>$email,
+                             "name"=>$name,
+                             "account_type"=>$type,
+                             "created"=>$created,
+                             "approved"=>$approved,
+                             "id"=>$id);
+    }
 
     return $user_object ? $user_object : false;
 }
@@ -134,7 +152,7 @@ function is_valid_user($username, $password)
     // Set this for later
     $userid = 0; 
     $hashed_password = md5($password);
-    $sql = "SELECT id FROM user WHERE username=? AND password=?";
+    $sql = "SELECT id FROM user WHERE username = ? AND password = ?";
     $bind_string = "ss";
     $bind_param_array = array(&$bind_string, &$username, &$hashed_password);
     $bind_results_array = array(&$userid);
@@ -152,6 +170,7 @@ function send_email($recipient_email, $subject, $body)
 
 function send_welcome_email($username, $message="", $subject="")
 {
+    // TODO: Do we even need this?
 //     $db = get_localhost_connection();
 //     $useremail = "";
 

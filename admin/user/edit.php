@@ -1,26 +1,19 @@
 <?
-include("../session_start.php");
+include("../../session_start.php");
 ?>
 <!DOCTYPE html>
 
 <head>
 <title>Saskatoon Police Report</title>
 
-<link rel="stylesheet" type="text/css" href="../spr.css">
+<link rel="stylesheet" type="text/css" href="../../spr.css">
 </head>
 
 <body>
     <div id="container">
-        <div id="header">
-            <div>
-            <img src="../img/logo.gif" alt="Saskatoon Police Report" id="banner_logo">
-            </div>
-            <div id="login">
-            <?php
-            include("admin_header.php");
-            ?>
-            </div>
-        </div>
+        <?
+        include("admin_header.php");
+        ?>
         <br clear="all">
         <div id="leftnav">
             <div class="menu_item"><span>About Us</span></div>
@@ -68,7 +61,7 @@ include("../session_start.php");
                         echo "<p><strong>This is you! Carry on... but be warned. There may
                          be some session issues until you log out and log back in again.</strong></p>";
                     }
-                    echo "<table border=1><form method='POST' action='edit.user.php?id=$userid'>
+                    echo "<table border=1><form method='POST' action='edit.php?id=$userid'>
                             <tr><th>Field</th><th>Value</th></tr>";
                     echo "<tr><td>Username</td><td><input type='text' name='username' value='".$user_object['username']."'/></td></tr>";
                     echo "<tr><td>Email</td><td><input type='email' name='email' value='".$user_object['email']."'/></td></tr>";
@@ -87,7 +80,7 @@ include("../session_start.php");
                 }
             }
 
-            echo "<p><a href='change.user.php'>Go back to user list</a></p>";
+            echo "<p><a href='change.php'>Go back to user list</a></p>";
         ?>
             <br clear="all">
         </div>
