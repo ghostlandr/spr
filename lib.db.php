@@ -1,4 +1,6 @@
 <?php
+require_once('lib.db.secret.php');
+
 /**
  * 
  * @param  [type] $sql
@@ -127,7 +129,7 @@ function get_database_connection($hostname="", $user="", $password="", $database
     }
     else if($hostname == "")
     {
-        $mysqli = new mysqli("localhost", "sprints_spr", "R3sisting!!", "sprints_spr_db");
+        $mysqli = get_spr_db_server_object();
     }
     else
     {
